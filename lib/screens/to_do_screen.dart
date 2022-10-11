@@ -25,7 +25,6 @@ class _ToDoScreenState extends State<ToDoScreen> {
         MediaQuery.of(context).size.height - appBarHeight - statusBarHeight;
 
     return SafeArea(
-
       child: Scaffold(
         appBar: appBar,
         body: SingleChildScrollView(
@@ -33,45 +32,50 @@ class _ToDoScreenState extends State<ToDoScreen> {
               padding: EdgeInsets.all(20),
               width: MediaQuery.of(context).size.width,
               height: height,
-              child: FutureBuilder(
+              child: FutureBuilder<List<ToDo>>(
                 future: DBHelper.instance.getAllTodo(),
                 builder: (context, snapshot) {
-                  if (snapshot.hasError)
+                  if (snapshot.hasError) {
+                    print(snapshot.error.toString());
                     return Center(
-                      child: Text('Error'),
+                      child: Text(snapshot.error.toString()),
                     );
-                  if (snapshot.hasData)
+                  }
+                  if (snapshot.hasData) {
+                    todoList = snapshot.data!;
                     return ListView.separated(
-                        itemBuilder: (context, index) {
-                          ToDo todo = todoList[index];
-                          return ListTile(
-                            trailing: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  todoList.removeAt(index);
-                                });
-                              },
-                              icon: Icon(
-                                Icons.delete,
-                                color: Colors.red,
-                              ),
+                      itemCount: todoList.length, //TODO
+                      itemBuilder: (context, index) {
+                        ToDo todo = todoList[index];
+                        return ListTile(
+                          trailing: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                todoList.removeAt(index);
+                              });
+                            },
+                            icon: Icon(
+                              Icons.delete,
+                              color: Colors.red,
                             ),
-                            leading: Checkbox(
-                              shape: CircleBorder(),
-                              value: todo.isChecked,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  todo.isChecked = value;
-                                });
-                              },
-                            ),
-                            subtitle: Text(todo.date.toString()),
-                            title: Text(todo.name!),
-                          );
-                        },
-                        separatorBuilder: (context, index) => Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10)),
-                        itemCount: todoList.length);
+                          ),
+                          leading: Checkbox(
+                            shape: CircleBorder(),
+                            value: todo.isChecked,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                todo.isChecked = value;
+                              });
+                            },
+                          ),
+                          subtitle: Text(todo.date.toString()),
+                          title: Text(todo.name!),
+                        );
+                      },
+                      separatorBuilder: (context, index) =>
+                          Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                    );
+                  }
                   return Center(
                     child: CircularProgressIndicator(),
                   );

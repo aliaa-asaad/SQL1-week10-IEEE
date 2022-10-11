@@ -1,7 +1,7 @@
 class ToDo {
   int? id;
   String? name;
-  DateTime? date;
+  String? date;
   bool? isChecked;
 
   ToDo({this.id, this.name, this.date, this.isChecked});
@@ -10,7 +10,7 @@ class ToDo {
     if (map['id'] != null) this.id = map['id'];
     this.name = map['name'];
     this.date = map['date'];
-    this.isChecked = map['isChecked']==0?false:true;
+    this.isChecked = map['isChecked'] == 0 ? false : true;
   }
 
   Map<String, dynamic> toMap() {
@@ -19,7 +19,7 @@ class ToDo {
       if (this.id != null) 'id': this.id,
       'name': this.name,
       'date': this.date,
-      'isChecked': this.isChecked==true?1:0,
+      'isChecked': this.isChecked == true ? 1 : 0,
     };
   }
 }

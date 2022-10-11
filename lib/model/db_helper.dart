@@ -11,20 +11,18 @@ class DBHelper {
 
   DBHelper.internal();
 
-  static Database? db;
+  late Database db;
 
   Future<Database?> createDatabase() async {
-    if (db != null) {
-      return db;
-    }
-    String? path = join(await getDatabasesPath(), 'todo.db');
+    String? path = join(await getDatabasesPath(), 'todo1.db');
     db = await openDatabase(path, version: 1,
-        onCreate: (Database db, int version) {
-      db.execute('create table todo'
+        onCreate: (Database db, int version) async {
+      await db.execute('create table $todoTable'
           ' (id integer primary key autoincrement,'
-          'name varchar(50),'
-          'date varchar (255),'
-          'isChecked integer');
+          'name text not null,'
+          'date text not null,'
+          'isChecked integer not null)');
+      print("Created");
     });
     return db;
   }

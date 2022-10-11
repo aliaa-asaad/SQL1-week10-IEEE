@@ -4,9 +4,9 @@ import 'package:sql1_week10/model/to_do.dart';
 import '../model/db_helper.dart';
 
 class ButtomSheet extends StatefulWidget {
-final  List<ToDo>? todoList;
+  final List<ToDo>? todoList;
 
-  const ButtomSheet({ this.todoList});
+  const ButtomSheet({this.todoList});
 
   @override
   _ButtomSheetState createState() => _ButtomSheetState();
@@ -14,11 +14,9 @@ final  List<ToDo>? todoList;
 
 class _ButtomSheetState extends State<ButtomSheet> {
   TextEditingController? nameController = TextEditingController();
-DateTime? selectedDate;
+  DateTime? selectedDate;
   @override
   Widget build(BuildContext context) {
-
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -35,7 +33,7 @@ DateTime? selectedDate;
                         context: context,
                         initialDate: DateTime.now(),
                         firstDate: DateTime(1970),
-                       lastDate: DateTime.now().add(Duration(days: 30)));
+                        lastDate: DateTime.now().add(Duration(days: 30)));
                     print(selectedDate.toString());
                     setState(() {});
                   },
@@ -55,7 +53,7 @@ DateTime? selectedDate;
               onPressed: () {
                 DBHelper.instance.insertTodo(ToDo(
                     isChecked: false,
-                    date: selectedDate,
+                    date: selectedDate.toString(),
                     name: nameController!.text));
                 print('aliaa');
                 Navigator.of(context).pop();
